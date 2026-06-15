@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+pyobjc-framework-ApplicationServices
+pyobjc-framework-Quartz
+pyobjc-framework-Cocoa
+websockets

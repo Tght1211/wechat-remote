@@ -1,0 +1,4 @@
+httpx
+prompt_toolkit
+rich
+websockets
