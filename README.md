@@ -220,6 +220,62 @@ wechat-remote/
 | POST | `/files` | 在当前聊天发送文件 |
 | WS | `/ws/notifications?token=` | WebSocket 实时消息推送 |
 
+## AI Skill — 让 AI 替你操控微信
+
+wchat 内置了 AI Skill，支持 Cursor / Claude Code 等 AI 工具通过自然语言直接操控微信。在同一台 Mac 上运行时，AI 就变成了你的微信机器人。
+
+### 工作原理
+
+```
+你对 AI 说："帮我给张三发个微信，说明天下午3点开会"
+    ↓
+AI 读取 wchat-bot Skill
+    ↓
+Shell 执行: wchat.sh send-to "张三" "明天下午3点开会"
+    ↓
+wchat server → Accessibility API → 微信客户端
+    ↓
+AI 回复："已给张三发送消息"
+```
+
+### 安装 Skill
+
+Skill 文件在 `skill/` 目录下，复制到 Cursor skills 目录即可：
+
+```bash
+cp -r skill/wchat-bot ~/.cursor/skills/
+```
+
+或者如果你用 Claude Code：
+
+```bash
+cp -r skill/wchat-bot ~/.claude/skills/
+```
+
+### 使用示例
+
+安装后，直接对 AI 说自然语言即可：
+
+- "看看最近谁找我了" — AI 会调用 API 查看最近会话
+- "给张三发：明天10点开会" — AI 直接发消息
+- "和李四的聊天记录" — AI 拉取并展示对话
+- "搜一下微信里有没有王总" — AI 搜索联系人
+- "把 report.pdf 发给张三" — AI 发送文件
+
+### 同机 AI 机器人模式
+
+在同一台 Mac 上同时运行 wchat server 和 AI（Cursor / Claude Code），就实现了 AI 微信机器人：
+
+```bash
+# 1. 启动 wchat server（微信需已登录）
+python -m server.server
+
+# 2. 在同一台机器的 Cursor 或 Claude Code 中，直接对 AI 说话
+#    AI 通过 Skill 自动操控微信
+```
+
+配置 `~/.wchat.json` 中 `server_url` 为 `http://localhost:9100` 即可。
+
 ## 安全说明
 
 - Token 保存在 `~/.wchat_token`（服务端）和 `~/.wchat.json`（客户端），权限均为 `600`
